@@ -42,7 +42,11 @@ peco_commandline_input() {
 	local result_cached=$2
 	local input_expired_time="${3:-$peco_input_expired_time}"
 
-	local md5_hash=$(echo $commandline | md5)
+	if [[ "$(uname)" == "Darwin" ]]; then
+  	local md5_hash=$(echo $commandline | md5)
+	else
+		local md5_hash=$(echo $commandline | md5sum)
+	fi
 	local input_folder="${aws_cli_input_tmp}/${ASSUME_ROLE:-NOTSET}"
 	mkdir -p ${input_folder}
 	local input_file_path="${input_folder}/${md5_hash}.txt"
