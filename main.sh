@@ -89,9 +89,10 @@ fi
 
 LHS_BIND_KEY=${3:-'True'}
 
-if [[ "${LHS_BIND_KEY}" = "True" ]]; then
+if [[ "${LHS_BIND_KEY}" = "True" && "$(uname)" == "Darwin" ]]; then
 	# Add hot-keys
-	# zle -N aws_help
+
+	# Hot key: Control + @
 	zle -N aws_main_function
 	bindkey '^@' aws_main_function
 
@@ -102,5 +103,19 @@ if [[ "${LHS_BIND_KEY}" = "True" ]]; then
 	zle -N aws_history
 	# Hotkey Option + ah
 	bindkey '˙' aws_history
-# bindkey '^e' aws_help
+
+	# zle -N aws_help
+	# bindkey '^e' aws_help
+elif [[ "${LHS_BIND_KEY}" = "True" && "$(uname)" == "Linux" ]]; then
+	# Hotkey on Linux: Ctrl + a
+	zle -N aws_main_function
+	bindkey '^a' aws_main_function
+
+	# Hotkey on Linux: Alt + c
+	zle -N aws_get_command
+	bindkey '\ec' aws_get_command
+
+	# Hotkey on Linux: Alt + h
+	zle -N aws_history
+	bindkey '\eh' aws_history
 fi
